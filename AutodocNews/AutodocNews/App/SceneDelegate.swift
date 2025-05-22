@@ -9,6 +9,8 @@ import UIKit
 
 final class SceneDelegate: UIResponder {
   var window: UIWindow?
+  private var appCoordinator: AppCoordinator!
+  private var appFactory: AppFactoryProtocol!
 }
 
 // MARK: - UIWindowSceneDelegate
@@ -26,8 +28,14 @@ extension SceneDelegate: UIWindowSceneDelegate {
 private extension SceneDelegate {
   func configWindow(with scene: UIScene) {
     guard let windowScene = scene as? UIWindowScene else { return }
+    let navigation = UINavigationController()
     window = UIWindow(windowScene: windowScene)
-    window?.rootViewController = ViewController()
-    window?.makeKeyAndVisible()
+    appFactory = AppFactory()
+    appCoordinator = AppCoordinator(
+      navigation: navigation,
+      appFactory: appFactory,
+      window: window
+    )
+    appCoordinator.start()
   }
 }
